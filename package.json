@@ -1,0 +1,25 @@
+{
+  "name": "expressuserapi",
+  "version": "1.0.0",
+  "description": "API made in Node JS and Express for the management of user accounts integrated with a database.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VictorLCosta/ExpressUserAPI.git"
+  },
+  "author": "Victor Lima Costa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VictorLCosta/ExpressUserAPI/issues"
+  },
+  "homepage": "https://github.com/VictorLCosta/ExpressUserAPI#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "knex": "^0.95.4",
+    "mysql2": "^2.2.5"
+  }
+}

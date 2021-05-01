@@ -1,7 +1,7 @@
 class HomeController{
 
     async index(req, res){
-        req.send('APP - EXPRESS');
+        res.send('APP - EXPRESS');
     }
 }
 

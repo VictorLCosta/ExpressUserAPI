@@ -3,6 +3,33 @@ const bcrypt = require('bcrypt');
 
 class User{
 
+    async findAll(){
+        try {
+            var result = await knex.select("id", "name", "email", "role").from("users");
+            return result;
+            
+        } catch (err) {
+            console.log(err);
+            return [];
+        }
+    }
+    
+    async findById(id){
+        try {
+            var result = await knex.select("id", "name", "email", "role").where("id", id).from("users");
+
+            if(result.length > 0){
+                return result[0];
+            } else {
+                return undefined;
+            }
+
+        } catch (err) {
+            console.log(err);
+            return undefined;
+        }
+    }
+
     async save(email, password, name){
         try {
             var normalized_email = email.toUpperCase();

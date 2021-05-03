@@ -5,7 +5,31 @@ const User = require('../models/User')
 class UsersController{
 
     async index(req, res){
+        try {
+            var users = await User.findAll();
+            res.sendStatus(200);
+            res.json(users);
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
+    async findUser(req, res){
+        try {
+            var id = req.params.id;
+            var user = User.findById(id);
+
+            if(user == undefined){
+                res.sendStatus(404);
+                res.json({});
+            } else {
+                res.sendStatus(200);
+                res.json(user);
+            }
+
+        } catch (err) {
+            
+        }
     }
 
     async create(req, res){

@@ -30,18 +30,6 @@ class User{
         }
     }
 
-    async save(email, password, name){
-        try {
-            var normalized_email = email.toUpperCase();
-
-            var hash = await bcrypt.hash(password, 10);
-            await knex.insert({name, email, normalized_email,password: hash, role: 0}).table("users");
-
-        } catch (err){
-            console.log(err);
-        }
-    }
-
     async findByEmail(email){
         try {
             var result = await knex.select('*').from("users").where({email: email});
@@ -54,6 +42,56 @@ class User{
         } catch (error) {
             console.log(error);
             return false;
+        }
+    }
+
+    async save(email, password, name){
+        try {
+            var normalized_email = email.toUpperCase();
+
+            var hash = await bcrypt.hash(password, 10);
+            await knex.insert({name, email, normalized_email,password: hash, role: 0}).table("users");
+
+        } catch (err){
+            console.log(err);
+        }
+    }
+
+    async update(id, email, name, role){
+        try {
+            var user = await this.findById(id);
+
+            if(user != undefined){
+                var newUser = {};
+
+                if(email != undefined){
+                    if(email != user.email){
+                        var result = await this.findByEmail(email);
+                        if(result == false){
+                            newUser.email = email;
+                        } else {
+                            return {status: false, err: "O e-mail já está cadastrado"};
+                        }
+                    }
+                }
+
+                if(name != undefined){
+                    newUser.name = name;
+                }
+
+                if(role != undefined){
+                    newUser.role = role;
+                }
+
+                await knex.update(newUser).where("id", id).table("users");
+                return {status: true};
+
+            } else {
+                return {status: false, err: "O usuário não existe!"}
+            }
+
+        } catch (err) {
+            console.log(err);
         }
     }
 }

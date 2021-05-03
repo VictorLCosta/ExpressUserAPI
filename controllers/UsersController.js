@@ -56,6 +56,19 @@ class UsersController{
         res.sendStatus(201);
     }
 
+    async edit(req, res){
+        var {id, email, role, email} = req.body;
+        var result = await User.update(id, email, role, email);
+
+        if(result != undefined){
+            if(result.status){
+                res.sendStatus(200);
+            } else {
+                res.sendStatus(406);
+            }
+        } 
+    }
+
 }
 
 module.exports = new UsersController;

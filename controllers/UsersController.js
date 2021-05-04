@@ -69,6 +69,17 @@ class UsersController{
         } 
     }
 
+    async delete(req, res){
+        var id = req.params.id;
+
+        var result = User.delete(id);
+        if(result.status){
+            res.sendStatus(200).send("Usuário deletado");
+        } else {
+            res.sendStatus(406).send(result.err);
+        }
+    }
+
 }
 
 module.exports = new UsersController;

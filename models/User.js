@@ -32,6 +32,22 @@ class User{
 
     async findByEmail(email){
         try {
+            var result = await knex.select("id", "name", "email", "role").where("email", email).from("users");
+
+            if(result.length > 0){
+                return result[0];
+            } else {
+                return undefined;
+            }
+
+        } catch (err) {
+            console.log(err);
+            return undefined;
+        }
+    }
+
+    async findEmail(email){
+        try {
             var result = await knex.select('*').from("users").where({email: email});
 
             if(result.length > 0){
@@ -66,7 +82,7 @@ class User{
 
                 if(email != undefined){
                     if(email != user.email){
-                        var result = await this.findByEmail(email);
+                        var result = await this.findEmail(email);
                         if(result == false){
                             newUser.email = email;
                         } else {

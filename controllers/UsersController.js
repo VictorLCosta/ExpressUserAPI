@@ -1,6 +1,7 @@
 const { default: knex } = require('knex');
 const validator = require('validator');
 const User = require('../models/User')
+const PasswordToken = require("../models/PasswordToken");
 
 class UsersController{
 
@@ -75,6 +76,17 @@ class UsersController{
         var result = User.delete(id);
         if(result.status){
             res.sendStatus(200).send("Usuário deletado");
+        } else {
+            res.sendStatus(406).send(result.err);
+        }
+    }
+
+    async recoverPassword(req, res){
+        var email = req.body.email;
+        var result = await PasswordToken.create(email);
+
+        if(result.status){
+            res.sendStatus(200).send("" + result.token);
         } else {
             res.sendStatus(406).send(result.err);
         }

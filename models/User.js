@@ -126,6 +126,12 @@ class User{
             console.log(err);
         }
     }
+
+    async changePassword(id, newPassword, token){
+        var hash = await bcrypt.hash(newPassword, 10);
+
+        await knex("users").where("id", id).update({password: hash, used: 1});
+    }
 }
 
 module.exports = new User;

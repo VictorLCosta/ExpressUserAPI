@@ -2,6 +2,10 @@ const { default: knex } = require('knex');
 const validator = require('validator');
 const User = require('../models/User')
 const PasswordToken = require("../models/PasswordToken");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+
+const secret = "_cWxl`]T@cvn43!$xvIDuDU[J.G,L~";
 
 class UsersController{
 
@@ -106,6 +110,34 @@ class UsersController{
         }
     }
 
+    async login(req, res){
+        var {email, password} = req.body;
+
+        var user = await User.findByEmail(email);
+
+        if(user != undefined){
+            var result = await bcrypt.compare(password, user.password);
+
+            if(result){
+
+                const token = jwt.sign({
+                    email: user.email, 
+                    name: user.name,
+                    role: user.role
+                }, secret, {
+                    algorithm: "HS256",
+                });
+
+                res.sendStatus(200).json({token: token});
+
+            } else {
+                res.sendStatus(406).send("Senha incorreta!");
+            }
+
+        } else {
+            res.sendStatus(404).send("Email não encontrado");
+        }
+    }
 }
 
 module.exports = new UsersController;
